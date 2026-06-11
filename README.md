@@ -1,80 +1,231 @@
-# Campus Isolation System Pipeline
+# 🎓 Campus Isolation System Pipeline
 
-**Project:** Early Detection of Social Isolation in Campus Life via Machine Learning  
-**Scope:** Full-stack ML Pipeline, FastAPI Backend, Next.js Frontend, Volunteer System, and Deep Support Analytics.
-
----
-
-## 1. Core Concept & Motivation
-
-The project aims to detect early signs of **social isolation** and potential mental health struggles among university students. Traditional counseling models are reactive—waiting until a student experiences a crisis to seek help. 
-
-This framework operates **proactively**. It uses **non-invasive campus metadata** (e.g., dining hall frequency, library hours, society events, and friend group size) to evaluate a student's social health. Crucially, it respects privacy by analyzing behavioral trends without relying on continuous GPS or smartphone sensor tracking.
+A proactive, full-stack machine learning pipeline built with **FastAPI** and **Next.js** that detects early signs of **social isolation** among university students using non-invasive campus metadata.
 
 ---
 
-## 2. Machine Learning Architecture
+## 📋 Table of Contents
 
-### 2.1 The Data
-The pipeline operates on an empirical dataset collected via peer surveys (N=563 records), capturing 25+ parameters including:
-* **Academic:** CGPA, class attendance, daily study hours, assignments due.
-* **Social:** Friend group size, weekly shared meals, society memberships, social outings.
-* **Lifestyle:** Screen time, sleep hours, hours spent alone.
-* **Psychological:** Perceived stress, loneliness score, mood rating.
-
-### 2.2 Preprocessing & Feature Engineering
-* **Data Sanitization:** Regex scripts clean formatting inconsistencies (e.g., mixed CGPA scales).
-* **Imputation:** Missing data is handled via rolling median imputations grouped by residential status (Hostelite vs. Day Scholar).
-* **Winsorization:** Extreme outliers (e.g., impossible screen-time values) are clipped using Z-score thresholding ($|Z| > 3$).
-* **Social Density Score (SDS):** A custom continuous mathematical feature engineered to summarize physical peer integration.
-
-### 2.3 The Models
-* **K-Means Clustering:** Segments the student body into 3 baseline clusters: *Highly Social*, *Academically Focused*, and *At-Risk*.
-* **Isolation Forest (The Core Engine):** An unsupervised anomaly detection algorithm maps dense normal data and flags extreme behavioral outliers (isolated students).
-
-### 2.4 The False-Positive Mitigation Filters
-The system employs strict programmatic overrides to correct ML mistakes:
-1. **High-Academic Exception Matrix:** Protects introverted overachievers. 
-2. **Healthy Override System:** Protects highly social students.
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Machine Learning Architecture](#machine-learning-architecture)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Application Routes](#application-routes)
+- [Privacy Model](#privacy-model)
+- [Screenshots](#screenshots)
+- [Contributors](#contributors)
+- [License](#license)
 
 ---
 
-## 3. Backend Implementation (FastAPI)
+## Overview
 
-The backend serves as the bridge between the ML models and the web frontend.
-* **Inference API (`/predict`):** Receives JSON payloads, computes the SDS, scales features, predicts anomalies, and applies exception filters.
-* **Dynamic Analytics:** Computes values against the **Campus Baseline Average** (for radar charting) and generates personalized recommendation text.
-* **Volunteer System Database (`/volunteers`):** A fully functional REST API supporting GET and POST requests. Data is persisted in a local `volunteers.json` file.
+This project simulates an early detection framework where non-invasive campus metadata (e.g., dining hall frequency, library hours, society events) is used to evaluate a student's social health. An intuitive dashboard provides personalized insights, while a built-in peer volunteer matching system instantly connects at-risk students with localized campus resources.
 
----
-
-## 4. Frontend Application (Next.js & React)
-
-The frontend provides an aesthetic, highly interactive, and responsive dashboard designed to lower the barrier to seeking help.
-
-### 4.1 The Wellness Insights Dashboard
-When a user submits their data, they receive an immediate, rich breakdown:
-* **Risk Status Banner:** Displays final category and cluster.
-* **Social Health Gauge:** A circular donut chart showing their social density score.
-* **Comparative Radar Chart:** A chart allowing visual comparison against the campus average.
-
-### 4.2 Deep Support Features for "At-Risk" Students
-If flagged as isolated or at-risk, the interface adapts to provide immediate support:
-* **Risk Factors Breakdown ("Why Am I Here?"):** The system parses specific input to tell the user *why* they were flagged.
-* **Interactive Goal Checklist:** A widget containing 4 small, achievable goals.
-
-### 4.3 Rich Interactive Modals (Quick Actions)
-* **Mental Health Counselors:** Displays a realistic directory of therapists with clickable phone links.
-* **Society Events:** Displays events mapped dynamically to the university.
-* **Activity Modals:** Facility hours and info.
-* **Live Volunteer Matching:** Queries the backend to show Volunteers interested in specific activities (Gym, Dining, Chai, Study Group).
-
-### 4.4 The Peer Volunteer System
-* **Registration Form:** Allows new students to sign up as a volunteer.
-* **Volunteer Directory:** A searchable grid to filter volunteers by their university and contact them.
+The system is designed as a proactive intervention tool that bridges **Machine Learning**, **Web Development**, and **Mental Health Support** by applying clustering and anomaly detection to real-world behavioral data.
 
 ---
 
-## 5. Novelty & Impact
+## Features
 
-By unifying machine learning anomaly detection with an empathetic, interactive UI and a peer-to-peer volunteer matching system, this project represents a complete, deployment-ready prototype. It solves the "cold start" problem of campus isolation by identifying students falling behind and immediately placing actionable, localized resources and friendly peer contacts directly in front of them.
+### 🧠 Machine Learning Features
+| Feature | Description |
+|---|---|
+| **Anomaly Detection** | Uses Isolation Forest to flag extreme behavioral outliers |
+| **Student Segmentation** | K-Means clustering segments students into Highly Social, Academically Focused, or At-Risk |
+| **Social Density Score** | A custom metric mathematically summarizing physical peer integration |
+| **False-Positive Mitigation** | Programmatic overrides to protect introverted overachievers and highly social students |
+
+### 🖥️ Frontend Features
+| Feature | Description |
+|---|---|
+| **Wellness Dashboard** | Immediate rich breakdown with risk status, social health gauge, and radar charts |
+| **Assessment Form** | Sleek, multi-step wizard capturing student data painlessly |
+| **Deep Support** | Interactive goal checklists and risk factor breakdowns for at-risk students |
+| **Quick Actions** | Contextual modals for mental health counselors, society events, and campus activities |
+| **Volunteer System** | Live matching with peers interested in specific activities (Gym, Dining, Study Groups) |
+
+### ⚙️ Backend Features
+| Feature | Description |
+|---|---|
+| **Inference API** | Endpoints to compute SDS, scale features, and predict anomalies |
+| **Dynamic Analytics** | Computes values against campus baselines to generate personalized text |
+| **REST API** | Fully functional endpoints for managing the volunteer database |
+
+---
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Backend** | Python 3, FastAPI |
+| **Frontend** | React, Next.js |
+| **Machine Learning** | Scikit-learn, Pandas, Numpy |
+| **Data Storage** | JSON (`volunteers.json`) |
+| **Styling** | Tailwind CSS / Custom CSS |
+
+---
+
+## Project Structure
+
+```
+Campus-Isolation-System-Pipeline/
+│
+├── social_isolation_pipeline.py   # Core ML pipeline script for training models
+├── Project_Comprehensive_Documentation.md # Detailed project documentation
+│
+├── backend/                       # FastAPI application
+│   ├── main.py                    # App entry point
+│   ├── router.py                  # API routing
+│   ├── ml_engine.py               # Machine learning inference logic
+│   ├── models.py                  # Pydantic data models
+│   ├── privacy.py                 # Data sanitization and privacy controls
+│   ├── requirements.txt           # Python dependencies
+│   ├── training_data.csv          # Training dataset
+│   └── volunteers.json            # Volunteer database
+│
+├── frontend/                      # Next.js web application
+│   ├── package.json               # Node.js dependencies
+│   ├── src/app/                   # Next.js App Router
+│   │   ├── layout.tsx             # Root layout
+│   │   ├── page.tsx               # Dashboard and assessment form
+│   │   └── globals.css            # Global styles
+│   └── public/                    # Static assets
+│
+└── outputs/                       # ML generated visualizations and results
+    ├── final_results.csv          # Predictions on the dataset
+    ├── pipeline_summary.txt       # Model performance summary
+    └── *.png                      # ROC, PR, UMAP, and silhouette charts
+```
+
+---
+
+## Machine Learning Architecture
+
+### 🌲 Isolation Forest (Anomaly Detection)
+Since isolation is a "minority" class without explicit diagnostic labels, an unsupervised anomaly detection algorithm is used to map dense normal data and flag extreme behavioral outliers.
+
+### 🎯 Custom Overrides
+To ensure fairness and accuracy:
+1. **High-Academic Exception:** Re-classifies isolated but high-performing students as "Academically Focused Overachiever".
+2. **Healthy Override:** Explicitly overrides false alarms for highly social students with high friend counts and social outings.
+
+---
+
+## Installation
+
+### Prerequisites
+- **Python 3.8+**
+- **Node.js 18+**
+
+### Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/MobeenMansoor/Campus-Isolation-System-Pipeline.git
+   cd Campus-Isolation-System-Pipeline
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   python -m venv venv
+   
+   # Windows
+   venv\Scripts\activate
+   
+   # macOS/Linux
+   source venv/bin/activate
+   
+   pip install -r requirements.txt
+   uvicorn main:app --reload
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## Usage
+
+### Workflow
+
+```
+Student inputs data via Wizard ──► Frontend sends JSON to Backend (/predict)
+                                          │
+                             ┌────────────┴────────────┐
+                             │                         │
+                    Computes Social               Predicts Anomaly
+                    Density Score (SDS)           (Isolation Forest)
+                             │                         │
+                             └────────────┬────────────┘
+                                          │
+                                 Applies Exception Filters
+                                 (False-Positive Mitigation)
+                                          │
+Student receives personalized ◄───────────┘
+Dashboard & Volunteer Matches
+```
+
+---
+
+## Application Routes
+
+### API Endpoints
+| Route | Method | Description |
+|---|---|---|
+| `/predict` | POST | Receives student data, runs ML inference, and returns risk status |
+| `/volunteers` | GET | Fetches available peer volunteers |
+| `/volunteers` | POST | Registers a new student as a volunteer |
+
+---
+
+## Privacy Model
+
+- **Non-Invasive Data:** Evaluates behavior through standard campus routines rather than tracking GPS or smartphone sensors.
+- **Anonymized Processing:** Identifiable features are isolated from ML inference to protect student privacy.
+- **Opt-In System:** All volunteer matching requires explicit student consent and sign-up.
+
+---
+
+## Screenshots
+
+> *Add screenshots of your application here to showcase the UI.*
+>
+> Suggested screenshots:
+> - Assessment Wizard
+> - Wellness Insights Dashboard (Gauges and Radar Charts)
+> - Volunteer Directory
+> - ML Visualizations (UMAP, ROC curve)
+
+---
+
+## Contributors
+
+| Name | Role |
+|---|---|
+| Mobeen Mansoor | Developer |
+
+---
+
+## License
+
+This project was developed as a university course project focusing on Machine Learning and proactive mental health intervention systems.
+
+---
+
+<p align="center">
+  Built with ❤️ using FastAPI & Next.js
+</p>
