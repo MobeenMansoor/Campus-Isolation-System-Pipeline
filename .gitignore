@@ -1,0 +1,8 @@
+ML-Dataset.csv
+__pycache__/
+*.pyc
+node_modules/
+.env
+.next/
+dist/
+build/

@@ -1,0 +1,69 @@
+======================================================================
+SOCIAL ISOLATION DETECTION - EVALUATION SUMMARY
+======================================================================
+
+Dataset: ML-Dataset.csv
+Total Students: 566
+Features Used: 22
+
+----------------------------------------
+MODEL EVALUATION METRICS
+----------------------------------------
+
+  hdbscan_silhouette: 0.2941
+  average_precision: 0.4230
+  roc_auc: 0.5309
+  mae: 1.2674
+  silhouette_avg: 0.0479
+  cv_auc_mean: 0.5431
+  cv_auc_std: 0.0501
+  cv_ap_mean: 0.4538
+  cv_ap_std: 0.0417
+
+----------------------------------------
+FINAL RISK DISTRIBUTION
+----------------------------------------
+
+  Monitor: 158 (27.9%)
+  Highly Social: 141 (24.9%)
+  Academically Focused: 134 (23.7%)
+  At-Risk: 121 (21.4%)
+  Confirmed At-Risk: 6 (1.1%)
+  Academically Focused Overachiever: 6 (1.1%)
+
+----------------------------------------
+CLUSTER DISTRIBUTION (K-Means)
+----------------------------------------
+
+  Highly Social: 212 (37.5%)
+  At-Risk: 180 (31.8%)
+  Academically Focused: 174 (30.7%)
+
+----------------------------------------
+HDBSCAN vs K-MEANS COMPARISON
+----------------------------------------
+
+  K-Means clusters: 3 (fixed)
+  HDBSCAN clusters: 2 (discovered)
+  K-Means Silhouette: 0.047931991485431646
+  HDBSCAN Silhouette: 0.2941
+  Winner: HDBSCAN (better silhouette)
+
+----------------------------------------
+GMM_Proba_AtRisk DISTRIBUTION
+----------------------------------------
+
+  Mean:   0.0318
+  Std:    0.1756
+  Median: 0.0000
+  Min:    0.0000
+  Max:    1.0000
+  >50%:   18 students
+
+----------------------------------------
+ENSEMBLE vs ISOLATION FOREST COMPARISON
+----------------------------------------
+
+  Isolation Forest flagged: 170
+  Ensemble flagged:         170
+  Students changed:         48
