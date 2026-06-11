@@ -225,7 +225,3 @@ Dashboard & Volunteer Matches
 This project was developed as a university course project focusing on Machine Learning and proactive mental health intervention systems.
 
 ---
-
-<p align="center">
-  Built with ❤️ using FastAPI & Next.js
-</p>
